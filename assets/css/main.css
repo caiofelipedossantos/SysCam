@@ -26,10 +26,6 @@ body {
   color: #FFF;
 }
 
-.form-login .result{
-    display: none;
-}
-
 .form-login .form-control {
   position: relative;
   box-sizing: border-box;
