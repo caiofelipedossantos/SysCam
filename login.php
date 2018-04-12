@@ -9,7 +9,7 @@
         <input type="email" id="inputEmail" class="form-control" placeholder="E-mail" required autofocus>
         <label for="inputPassword" class="sr-only">Senha</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
 <?php
