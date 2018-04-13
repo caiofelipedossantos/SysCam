@@ -18,7 +18,6 @@ $(document).ready(function(){
             success: function (data)
             {
                 $('#result').html(data);
-
             }
         });
         return false;	//Evita que a página seja atualizada

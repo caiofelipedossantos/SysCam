@@ -1,4 +1,14 @@
-<?php 
+<?php
+session_start();
+if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
+    foreach($_SESSION['dados'] as $user){
+        if($user['tipo'] == 0){
+            header("Location: index.php");
+        }else{
+            header("Location: usuario.php");
+        }
+    }
+}else{
     /** Chamada do template de Cabeçario */
     include_once 'parts/header.php';
 ?>
@@ -15,4 +25,5 @@
 <?php
     /** Chamada do template de Rodapé */
     include_once 'parts/footer.php';
+}
 ?>

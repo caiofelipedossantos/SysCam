@@ -1,20 +1,31 @@
 <?php
+session_start();
+
 //Rquisitando arquivo de configuração
 require_once '../config.php';
+require_once '../classes/usuario.php';
 
 //Pegando dados passados por AJAX
-$login = $_POST['login'];	
-$senha = $_POST['senha'];
+$login = addslashes($_POST['login']);	
+$senha = addslashes($_POST['senha']);
 
-//Global de Conexão
-global $pdo;
-$dados = array();
+//Instancia da classe usuario
 
-$sql = $pdo->prepare("SELECT `idusuario`, `nome`, `email`, `status`, `senha`, `tipo`, `data_cadastro` FROM `usuario` WHERE email = ? AND senha = md5(?);");
-$sql->bindValue(1,$login);
-$sql->bindValue(2,$senha);
-$sql->execute();
-if($sql->rowCount() > 0):
-    $dados = $sql->fetch();
-    echo $dados['nome'];
-endif;
+$usuario = new Usuario();
+
+$user = $usuario->verificaLogin($login,$senha);
+
+if ($user != null) {
+    if ($user['status'] != 0) {
+        $_SESSION['dados'] = $user;
+        if($user['tipo'] == 0){
+            echo '<script type="text/javascript">window.location.href = "index.php";</script>';
+        }else{
+            echo '<script type="text/javascript">window.location.href = "usuario.php";</script>';
+        }
+    } else {
+        echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Falha ao efetuar login. Usuário desativado.</div>';
+    }
+} else {
+    echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Falha ao efetuar login. Usuário ou Senha Inválidos.</div>';
+}
