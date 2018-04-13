@@ -3,42 +3,24 @@ session_start();
 if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
  /** Chamada do template de Cabeçario */
  include_once 'parts/header.php';
+
+ require_once 'config.php';
+ require_once 'classes/camera.php';
  ?>
     <div class="wrapper">
             <!-- Sidebar Holder -->
             <nav id="sidebar">
                 <div class="sidebar-header">
-                    <h3>Header as you want </h3></h3>
+                    <img src="assets/images/logo.png" alt="Nobre Velórios" class="img-fluid">
                 </div>
-
                 <ul class="list-unstyled components">
-                    <p>Dummy Heading</p>
                     <li class="active">
-                        <a href="#menu" >Animación</a>
-                        
+                        <a href="#menu" >Câmeras</a>
                     </li>
                     <li>
-                        <a href="#menu">Ilustración</a>
-                        
-                        
+                        <a href="#menu">Usuários</a>
                     </li>
-                    <li>
-                        <a href="#">Interacción</a>
-                    </li>
-                    <li>
-                        <a href="#">Blog</a>
-                    </li>
-                    <li>
-                        <a href="#">Acerca</a>
-                    </li>
-                    <li>
-                        <a href="#">contacto</a>
-                    </li>
-                    
-                    
                 </ul>
-
-                
             </nav>
 
             <!-- Page Content Holder -->
@@ -49,8 +31,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
 
                         <div class="navbar-header">
                             <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
-                                <i class="glyphicon glyphicon-align-left"></i>
-                                <span>Toggle Sidebar</span>
+                                <i class="fa fa-align-center"></i>
                             </button>
                         </div>
 
@@ -62,7 +43,81 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                     </div>
                 </nav>
 
-            
+                <section class="row-section">
+                    <?php
+                        $camera = new Camera();
+                        $cam = $camera->listCamera();
+                    ?>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-10 offset-md-1 row-block">
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <h2>Câmeras</h2>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <div class="actionButton">
+                                            <button type="button" class="btn btn-success"><span><i class="fa fa-plus"></i></span> Câmera</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 offset-md-1 row-block">
+                                <div class="row">
+                                    <?php
+                                        foreach($cam as $c){
+                                    ?>
+                                            <div class="col-md-6 mt-4">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="<?php echo $c['screenshot']; ?>">
+                                                    <div class="card-block">
+                                                        <h4 class="card-title"><?php echo $c['nome']; ?></h4>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <span>
+                                                            <?php 
+                                                                if($c['status'] == 1){
+                                                                    echo '<span class="badge badge-success">Ativa</span>';
+                                                                }else{
+                                                                    echo '<span class="badge badge-danger">Desativada</span>';
+                                                                }
+                                                            ?>
+                                                        </span>
+                                                        <button class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#cameraLive" data-alias="<?php echo $c['alias'] ?>" data-nome="<?php echo $c['nome'] ?>">Ver</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    <?php
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- MODALS -->
+        <div class="modal fade" id="cameraLive" tabindex="-1" role="dialog" aria-labelledby="CameraLive" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CameraLive"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+                </div>
             </div>
         </div>
  <?php

@@ -10,5 +10,7 @@
       </script>
       <!-- Main CSS -->
       <link rel="stylesheet" type="text/css" media="screen" href="assets/css/main.css" />
+      <!-- Font Awesome CSS -->
+      <link rel="stylesheet" type="text/css" media="screen" href="plugins/Font_Awesome/css/font-awesome.min.css" />
    </head>
    <body>

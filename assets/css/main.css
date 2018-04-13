@@ -99,9 +99,10 @@ a, a:hover, a:focus {
     left: 0;
     height: 100vh;
     z-index: 999;
-    background: #7386D5;
+    background: #272634;
     color: #fff;
     transition: all 0.3s;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #sidebar.active {
@@ -110,12 +111,11 @@ a, a:hover, a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #6d7fcc;
+    background: #272634;
 }
 
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid #47748b;
 }
 
 #sidebar ul p {
@@ -194,11 +194,90 @@ a.article, a.article:hover {
     position: absolute;
     top: 0;
     right: 0;
+    background: #F0F0F0;
 }
 #content.active {
     width: 100%;
 }
 
+#content .box-content{
+  background: #FFF;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------------------------------------
+  SECTION
+-------------------------------------------------- */
+.row-section{
+  width:100%; 
+  background: #F0F0F0;  
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #FFFFFF, #F0F0F0);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #FFFFFF, #F0F0F0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+  .row-section h2{
+    color:#444; 
+    margin: 30px;
+  }
+.row-section .actionButton{
+  margin: 30px;
+}
+  .row-section .row-block{
+    background:#fff; 
+    padding:20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .row-section .card {
+    font-size: 1em;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    border-radius: .28571429rem;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+}
+
+.row-section .card-block {
+    font-size: 1em;
+    position: relative;
+    margin: 0;
+    padding: 1em;
+    border: none;
+    border-top: 1px solid rgba(34, 36, 38, .1);
+    box-shadow: none;
+}
+
+.row-section .card-img-top {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.row-section .card-title {
+    font-size: 1.28571429em;
+    font-weight: 700;
+    line-height: 1.2857em;
+}
+
+.row-section .card-text {
+    clear: both;
+    margin-top: .5em;
+    color: rgba(0, 0, 0, .68);
+}
+
+.row-section .card-footer {
+    font-size: 1em;
+    position: static;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    padding: .75em 1em;
+    color: rgba(0, 0, 0, .4);
+    border-top: 1px solid rgba(0, 0, 0, .05) !important;
+    background: #fff;
+}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
