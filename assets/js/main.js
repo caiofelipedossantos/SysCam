@@ -29,6 +29,9 @@ $(document).ready(function () {
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
     });
 
+    /*
+        MODAL VIEW CAMERA
+    */
     $('#cameraLive').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var nome = button.data('nome')
@@ -37,6 +40,36 @@ $(document).ready(function () {
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         var modal = $(this)
         modal.find('.modal-title').text(nome)
-        modal.find('.modal-body').html('<iframe src="http://g1.ipcamlive.com/player/player.php?alias='+ alias +'&autoplay=1&disablefullscreen=0" width="100%" height="450px" frameborder="0" allowfullscreen></iframe>');
-      })
+        modal.find('.modal-body').html('<iframe src="http://g1.ipcamlive.com/player/player.php?alias=' + alias + '&autoplay=1&disablefullscreen=0" width="100%" height="450px" frameborder="0" allowfullscreen></iframe>');
+    });
+
+    /*
+      BUTTON ADD CAMERA
+    */
+    $('#addCameraButton').click(function () {
+        var json = "https://ipcamlive.com/api/v2/getcameras?apisecret=5ac0a4b1543f4";
+        var out = new XMLHttpRequest();
+        var select = $("#camDiponivel");
+        var cams;
+        $(select).children('option:not(:first)').remove();
+        out.open('GET', json);
+        out.onload = function () {
+            var data = JSON.parse(out.responseText);
+            cams = data.data.cameras;
+            for (i = 0; i < cams.length; i++) {
+                select.append($("<option></option>").val(cams[i].alias).text(cams[i].alias));
+            }
+        };
+        out.send();
+        (select).change(function () {
+            for (i = 0; i < cams.length; i++) {
+                if ($(this).val() == cams[i].alias) {
+                    $('#camAlias').val(cams[i].alias);
+                    $('#camEndereco').val(cams[i].url);
+                    $('#screenshot').val("http://g1.ipcamlive.com/player/snapshot.php?alias=" + cams[i].alias);
+                }
+            }
+        });
+    });
+
 });

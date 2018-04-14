@@ -57,7 +57,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <div class="actionButton">
-                                            <button type="button" class="btn btn-success"><span><i class="fa fa-plus"></i></span> Câmera</button>
+                                            <button type="button" id="addCameraButton" class="btn btn-success" data-toggle="modal" data-target="#addCamera" ><span><i class="fa fa-plus"></i></span> Câmera</button>
                                         </div>
                                     </div>
                                 </div>
@@ -117,6 +117,66 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                 </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Camera -->
+        <div class="modal fade" id="addCamera" tabindex="-1" role="dialog" aria-labelledby="addCamera" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Adicionar Câmera</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="camDiponivel">Câmeras Disponiveis</label>
+                                    <select class="custom-select mr-sm-2" id="camDiponivel">
+                                        <option selected>Selecione</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="camAlias">Alias</label>
+                                    <input type="text" class="form-control" id="camAlias" placeholder="Alias" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="camNome">Nome</label>
+                                    <input type="text" class="form-control" id="camNome" placeholder="Nome">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="camNome">Endereço</label>
+                                    <input type="text" class="form-control" id="camEndereco" placeholder="Endereço" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="camScreenshot">Screenshot</label>
+                                    <input type="text" class="form-control" id="screenshot" placeholder="Screenshot" readonly>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="camStatus">Status</label>
+                                    <select class="custom-select mr-sm-2" id="camDiponivel">
+                                        <option selected>Selecione</option>
+                                        <option value="0">Desativado</option>
+                                        <option value="1">Ativado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
                 </div>
             </div>
         </div>
