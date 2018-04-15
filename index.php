@@ -34,12 +34,6 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 <i class="fa fa-align-center"></i>
                             </button>
                         </div>
-
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="#">Page</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </nav>
 
@@ -57,7 +51,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <div class="actionButton">
-                                            <button type="button" id="addCameraButton" class="btn btn-success" data-toggle="modal" data-target="#addCamera" ><span><i class="fa fa-plus"></i></span> Câmera</button>
+                                            <button type="button" id="addCameraButton" class="btn btn-success" data-toggle="modal" data-target="#AddCamera" ><span><i class="fa fa-plus"></i></span> Câmera</button>
                                         </div>
                                     </div>
                                 </div>
@@ -68,27 +62,35 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                             <div class="col-md-10 offset-md-1 row-block">
                                 <div class="row">
                                     <?php
-                                        foreach($cam as $c){
+                                        if($cam != null){
+                                            foreach($cam as $c){
                                     ?>
-                                            <div class="col-md-6 mt-4">
-                                                <div class="card">
-                                                    <img class="card-img-top" src="<?php echo $c['screenshot']; ?>">
-                                                    <div class="card-block">
-                                                        <h4 class="card-title"><?php echo $c['nome']; ?></h4>
-                                                    </div>
-                                                    <div class="card-footer">
-                                                        <span>
-                                                            <?php 
-                                                                if($c['status'] == 1){
-                                                                    echo '<span class="badge badge-success">Ativa</span>';
-                                                                }else{
-                                                                    echo '<span class="badge badge-danger">Desativada</span>';
-                                                                }
-                                                            ?>
-                                                        </span>
-                                                        <button class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#cameraLive" data-alias="<?php echo $c['alias'] ?>" data-nome="<?php echo $c['nome'] ?>">Ver</button>
+                                                <div class="col-md-6 mt-4">
+                                                    <div class="card">
+                                                        <img class="card-img-top" src="<?php echo $c['screenshot']; ?>">
+                                                        <div class="card-block">
+                                                            <h4 class="card-title"><?php echo $c['nome']; ?></h4>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <span>
+                                                                <?php 
+                                                                    if($c['status'] == 1){
+                                                                        echo '<span class="badge badge-success">Ativa</span>';
+                                                                    }else{
+                                                                        echo '<span class="badge badge-danger">Desativada</span>';
+                                                                    }
+                                                                ?>
+                                                            </span>
+                                                            <button class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#cameraLive" data-alias="<?php echo $c['alias'] ?>" data-nome="<?php echo $c['nome'] ?>">Ver</button>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                    <?php
+                                            }
+                                        }else{
+                                    ?>
+                                            <div class="col-md-12 mt-4">
+                                                <div class="alert alert-dark" role="alert">Não há câmeras cadastradas.</div>
                                             </div>
                                     <?php
                                         }
@@ -122,17 +124,18 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
         </div>
 
         <!-- Add Camera -->
-        <div class="modal fade" id="addCamera" tabindex="-1" role="dialog" aria-labelledby="addCamera" aria-hidden="true">
+        <div class="modal fade" id="AddCamera" tabindex="-1" role="dialog" aria-labelledby="addCamera" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Adicionar Câmera</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                    <div id="result"></div>
+                        <form id="formAddCamera" method="POST">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="camDiponivel">Câmeras Disponiveis</label>
@@ -142,40 +145,38 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="camAlias">Alias</label>
-                                    <input type="text" class="form-control" id="camAlias" placeholder="Alias" readonly>
+                                    <input type="text" class="form-control" name="alias" id="camAlias" placeholder="Alias" readonly required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="camNome">Nome</label>
-                                    <input type="text" class="form-control" id="camNome" placeholder="Nome">
+                                    <input type="text" class="form-control" name="nome" id="camNome" placeholder="Nome" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="camNome">Endereço</label>
-                                    <input type="text" class="form-control" id="camEndereco" placeholder="Endereço" readonly>
+                                    <input type="text" class="form-control" name="endereco" id="camEndereco" placeholder="Endereço" readonly required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="camScreenshot">Screenshot</label>
-                                    <input type="text" class="form-control" id="screenshot" placeholder="Screenshot" readonly>
+                                    <input type="text" class="form-control" name="screenshot" id="screenshot" placeholder="Screenshot" readonly required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="camStatus">Status</label>
-                                    <select class="custom-select mr-sm-2" id="camDiponivel">
-                                        <option selected>Selecione</option>
+                                    <select class="custom-select mr-sm-2" name="status" id="camDiponivel">
                                         <option value="0">Desativado</option>
-                                        <option value="1">Ativado</option>
+                                        <option selected value="1">Ativado</option>
                                     </select>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </div>
             </div>
