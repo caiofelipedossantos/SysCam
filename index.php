@@ -6,19 +6,23 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
 
  require_once 'config.php';
  require_once 'classes/camera.php';
+ require_once 'classes/usuario.php';
  ?>
-    <div class="wrapper">
+    <div id="tabs" class="wrapper">
             <!-- Sidebar Holder -->
             <nav id="sidebar">
                 <div class="sidebar-header">
                     <img src="assets/images/logo.png" alt="Nobre Velórios" class="img-fluid">
                 </div>
                 <ul class="list-unstyled components">
-                    <li class="active">
-                        <a href="#menu" >Câmeras</a>
+                    <li>
+                        <a href="#accessListView" ><i class="fa fa-lock"></i> Acessos</a>
                     </li>
                     <li>
-                        <a href="#menu">Usuários</a>
+                        <a href="#camListView" ><i class="fa fa-camera"></i> Câmeras</a>
+                    </li>
+                    <li>
+                        <a href="#userListView"><i class="fa fa-user"></i> Usuários</a>
                     </li>
                 </ul>
             </nav>
@@ -37,7 +41,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                     </div>
                 </nav>
 
-                <section class="row-section">
+                <section id="camListView" class="row-section">
                     <?php
                         $camera = new Camera();
                         $cam = $camera->listCamera();
@@ -82,6 +86,69 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                                                 ?>
                                                             </span>
                                                             <button class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#cameraLive" data-alias="<?php echo $c['alias'] ?>" data-nome="<?php echo $c['nome'] ?>">Ver</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    <?php
+                                            }
+                                        }else{
+                                    ?>
+                                            <div class="col-md-12 mt-4">
+                                                <div class="alert alert-dark" role="alert">Não há câmeras cadastradas.</div>
+                                            </div>
+                                    <?php
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="userListView" class="row-section">
+                    <?php
+                        $usuario = new Usuario();
+                        $user = $usuario->listUsuario();
+                    ?>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-10 offset-md-1 row-block">
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <h2>Usuários</h2>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <div class="actionButton">
+                                            <button type="button" id="addCameraButton" class="btn btn-success" data-toggle="modal" data-target="#AddCamera" ><span><i class="fa fa-plus"></i></span> Usuário</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 offset-md-1 row-block">
+                                <div class="row">
+                                    <?php
+                                        if($user != null){
+                                            foreach($user as $u){
+                                    ?>
+                                                <div class="col-md-6 mt-4">
+                                                    <div class="card">
+                                                        <img class="card-img-top" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                                                        <div class="card-block">
+                                                            <h4 class="card-title"><?php echo $u['nome']; ?></h4>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <span>
+                                                                <?php 
+                                                                    if($u['status'] == 1){
+                                                                        echo '<span class="badge badge-success">Ativa</span>';
+                                                                    }else{
+                                                                        echo '<span class="badge badge-danger">Desativada</span>';
+                                                                    }
+                                                                ?>
+                                                            </span>
+                                                            <!--<button class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#cameraLive" data-alias="<?php echo $c['alias'] ?>" data-nome="<?php echo $c['nome'] ?>">Ver</button>-->
                                                         </div>
                                                     </div>
                                                 </div>
