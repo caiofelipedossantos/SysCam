@@ -32,7 +32,7 @@ class Usuario{
         //Global de Conexão
         global $pdo;
         
-        $sql = $pdo->prepare("INSERT INTO `usuario`(`nome`, `email`, `status`, `senha`) VALUES (?,?,?,?);");
+        $sql = $pdo->prepare("INSERT INTO `usuario`(`nome`, `email`, `status`, `senha`) VALUES (?,?,?,md5(?);");
         $sql->bindValue(1,$nome);
         $sql->bindValue(2,$email);
         $sql->bindValue(3,$status);
@@ -42,5 +42,36 @@ class Usuario{
         }else{
             return false;
         }
+    }
+
+    public function editUsuario($id, $nome, $senha, $status, $email){
+        //Global de Conexão
+        global $pdo;
+        
+        if($senha == null){
+            $sql = $pdo->prepare("UPDATE `usuario` SET `nome` = ?, `email` = ?, `status` = ? WHERE `usuario`.`idusuario` = ?;");
+            $sql->bindValue(1,$nome);
+            $sql->bindValue(2,$email);
+            $sql->bindValue(3,$status);
+            $sql->bindValue(4,$id);
+            if($sql->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            $sql = $pdo->prepare("UPDATE `usuario` SET `nome` = ?, `email` = ?, `status` = ?, `senha` = md5(?) WHERE `usuario`.`idusuario` = ?;");
+            $sql->bindValue(1,$nome);
+            $sql->bindValue(2,$email);
+            $sql->bindValue(3,$status);
+            $sql->bindValue(4,$senha);
+            $sql->bindValue(5,$id);
+            if($sql->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        
     }
 }

@@ -102,10 +102,54 @@ $(document).ready(function () {
         });
     });
 
+    /***********************
+        USUARIO 
+    ************************/
+
+    //MODAL USUARIO
+    $('#editUsuario').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var nome = button.data('nome');
+        var senha = button.data('senha');
+        var status = button.data('status');
+        var email = button.data('email');
+        var modal = $(this);
+        modal.find('.modal-title').text("Editar: " + nome);
+        $('#idUsuario').val(id);
+        $('#nomeUsuario').val(nome);
+        $('#statusUsuario').val(status);
+        $('#emailUsuario').val(email);
+    });
+
+    //EDIT
+    $('#formeditUsuario').submit(function () { 	//Ao submeter formulário
+        var url = "actions/editUsuario.php"; //Caminho do arquivo php
+        var formDados = new FormData($(this)[0]); //Pega os valores dos campos
+        $.ajax({    //Função AJAX
+            type: "POST", //Tipo da passagem dos dados
+            url: url, // local do arquivo php
+            dataType: 'html', //tipo de dados a serem passados
+            data: formDados, // dados do formulario
+            cache: false, //cache
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                var alertBox = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>AGUARDE</strong> estamos analizando seus dados!</div>';
+                $('#resultEditUser').html(alertBox);
+            },
+            complete: function () { },
+            success: function (data) {
+                $('#resultEditUser').html(data);
+                $("#userListView").load(location.href + " #userListView>*", "");
+            }
+        });
+        return false;	//Evita que a página seja atualizada
+    });
+
     /*
         TABS
     */
 
-   $( "#tabs" ).tabs();
-
+    $("#tabs").tabs();
 });

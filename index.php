@@ -38,6 +38,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 <i class="fa fa-align-center"></i>
                             </button>
                         </div>
+                        <a href="sair.php" class="btn btn-secondary">Sair</a>
                     </div>
                 </nav>
 
@@ -132,9 +133,9 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                         if($user != null){
                                             foreach($user as $u){
                                     ?>
-                                                <div class="col-md-6 mt-4">
+                                                <div class="col-md-3 mt-4">
                                                     <div class="card">
-                                                        <img class="card-img-top" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                                                        <img class="card-img-top" src="assets/images/user.png">
                                                         <div class="card-block">
                                                             <h4 class="card-title"><?php echo $u['nome']; ?></h4>
                                                         </div>
@@ -148,7 +149,14 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                                                     }
                                                                 ?>
                                                             </span>
-                                                            <!--<button class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#cameraLive" data-alias="<?php echo $c['alias'] ?>" data-nome="<?php echo $c['nome'] ?>">Ver</button>-->
+                                                            <button class="btn btn-info float-right btn-sm" 
+                                                            data-toggle="modal" 
+                                                            data-target="#editUsuario" 
+                                                            data-id="<?php echo $u['idusuario'] ?>" 
+                                                            data-nome="<?php echo $u['nome'] ?>"
+                                                            data-status="<?php echo $u['status'] ?>"
+                                                            data-email="<?php echo $u['email'] ?>"
+                                                            >Editar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -238,6 +246,54 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                         <option value="0">Desativado</option>
                                         <option selected value="1">Ativado</option>
                                     </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="modal fade" id="editUsuario" tabindex="-1" role="dialog" aria-labelledby="editUsuario" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Usuário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <div id="resultEditUser"></div>
+                        <form id="formeditUsuario" method="POST">
+                            <input type="hidden" class="form-control" name="idUsuario" id="idUsuario">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="nomeUsuario">Nome</label>
+                                    <input type="text" class="form-control" name="nomeUsuario" id="nomeUsuario" placeholder="Nome" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="senhaUsuario">Senha</label>
+                                    <input type="password" class="form-control" name="senhaUsuario" id="senhaUsuario" placeholder="Senha">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="statusUsuario">Status</label>
+                                    <select class="custom-select mr-sm-2" name="statusUsuario" id="statusUsuario">
+                                        <option value="0">Desativado</option>
+                                        <option selected value="1">Ativado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="emailUsuario">E-mail</label>
+                                    <input type="email" class="form-control" name="emailUsuario" id="emailUsuario" placeholder="E-mail" required>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
