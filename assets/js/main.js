@@ -152,4 +152,7 @@ $(document).ready(function () {
     */
 
     $("#tabs").tabs();
+
+    /* TOOLTIP */
+    $('[data-toggle="tooltip"]').tooltip(); 
 });

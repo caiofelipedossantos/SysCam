@@ -175,6 +175,95 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                         </div>
                     </div>
                 </section>
+                <section id="accessListView" class="row-section">
+                    <?php
+                        $usuario = new Usuario();
+                        $user = $usuario->listUsuario();
+                    ?>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-10 offset-md-1 row-block">
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <h2>Acessos</h2>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <div class="actionButton">
+                                            <button type="button" id="addAcesso" class="btn btn-success" data-toggle="modal" data-target="#addAcessoModal" ><span><i class="fa fa-plus"></i></span> Acesso</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 offset-md-1 row-block">
+                                <div id="accordion">
+                                    <div class="border-0 mt-3">
+                                        <div class="card-header" id="headerCam_1">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h3><i class="fa fa-user" ></i> Caio Felipe <span class="badge badge-secondary">3</span></h3>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#accessCam_1" aria-expanded="true" aria-controls="collapseOne">
+                                                    Ver
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="accessCam_1" class="collapse" aria-labelledby="headerCam_1" data-parent="#accordion">
+                                        <div class="card-body">
+                                                <div class="col-md-3 mt-4">
+                                                        <div class="card">
+                                                            <img class="card-img-top" src="http://g1.ipcamlive.com/player/snapshot.php?alias=5abd19476ade9">
+                                                            <div class="card-block">
+                                                                <h4 class="card-title">Câmera 1</h4>
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                    <span class="badge badge-success">Ativa</span>
+                                                                    <button class="btn btn-danger float-right btn-sm">Remover</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="border-0 mt-3">
+                                        <div class="card-header" id="headerCam_2">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h3><i class="fa fa-user" ></i> Caio Felipe <span class="badge badge-secondary">3</span></h3>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#accessCam_2" aria-expanded="true" aria-controls="collapseOne">
+                                                    Ver
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="accessCam_2" class="collapse" aria-labelledby="headerCam_2" data-parent="#accordion">
+                                        <div class="card-body">
+                                                <div class="col-md-3 mt-4">
+                                                        <div class="card">
+                                                            <img class="card-img-top" src="http://g1.ipcamlive.com/player/snapshot.php?alias=5abd19476ade9">
+                                                            <div class="card-block">
+                                                                <h4 class="card-title">Câmera 2</h4>
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                    <span class="badge badge-success">Ativa</span>
+                                                                    <button class="btn btn-danger float-right btn-sm">Remover</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
@@ -270,6 +359,54 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                     <div class="modal-body">
                     <div id="resultEditUser"></div>
                         <form id="formeditUsuario" method="POST">
+                            <input type="hidden" class="form-control" name="idUsuario" id="idUsuario">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="nomeUsuario">Nome</label>
+                                    <input type="text" class="form-control" name="nomeUsuario" id="nomeUsuario" placeholder="Nome" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="senhaUsuario">Senha</label>
+                                    <input type="password" class="form-control" name="senhaUsuario" id="senhaUsuario" placeholder="Senha">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="statusUsuario">Status</label>
+                                    <select class="custom-select mr-sm-2" name="statusUsuario" id="statusUsuario">
+                                        <option value="0">Desativado</option>
+                                        <option selected value="1">Ativado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="emailUsuario">E-mail</label>
+                                    <input type="email" class="form-control" name="emailUsuario" id="emailUsuario" placeholder="E-mail" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Acesso -->
+         <div class="modal fade" id="addAcessoModal" tabindex="-1" role="dialog" aria-labelledby="addAcesso" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Usuário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <div id="resultEditUser"></div>
+                        <form id="formAddAcesso" method="POST">
                             <input type="hidden" class="form-control" name="idUsuario" id="idUsuario">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
