@@ -349,7 +349,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="camStatus">Status</label>
-                                    <select class="custom-select mr-sm-2" name="status" id="camDiponivel">
+                                    <select class="custom-select mr-sm-2" name="status" id="statusAddCamera">
                                         <option value="0">Desativado</option>
                                         <option selected value="1">Ativado</option>
                                     </select>
@@ -511,21 +511,21 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                     <div class="modal-body">
                     <div id="resultEditUser"></div>
                         <form id="formAddAcesso" method="POST">
-                            <input type="hidden" class="form-control" name="idUsuario" id="idUsuario">
+                            <input type="hidden" class="form-control" name="idUsuario" >
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="nomeUsuario">Nome</label>
-                                    <input type="text" class="form-control" name="nomeUsuario" id="nomeUsuario" placeholder="Nome" required>
+                                    <input type="text" class="form-control" name="nomeUsuario"  placeholder="Nome" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="senhaUsuario">Senha</label>
-                                    <input type="password" class="form-control" name="senhaUsuario" id="senhaUsuario" placeholder="Senha">
+                                    <input type="password" class="form-control" name="senhaUsuario" placeholder="Senha">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="statusUsuario">Status</label>
-                                    <select class="custom-select mr-sm-2" name="statusUsuario" id="statusUsuario">
+                                    <select class="custom-select mr-sm-2" name="statusUsuario" >
                                         <option value="0">Desativado</option>
                                         <option selected value="1">Ativado</option>
                                     </select>
@@ -534,7 +534,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="emailUsuario">E-mail</label>
-                                    <input type="email" class="form-control" name="emailUsuario" id="emailUsuario" placeholder="E-mail" required>
+                                    <input type="email" class="form-control" name="emailUsuario"  placeholder="E-mail" required>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
