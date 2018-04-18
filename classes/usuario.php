@@ -29,19 +29,19 @@ class Usuario{
     }
 
     public function addUsuario($nome, $email, $status, $senha){
-        //Global de Conexão
-        global $pdo;
-        
-        $sql = $pdo->prepare("INSERT INTO `usuario`(`nome`, `email`, `status`, `senha`) VALUES (?,?,?,md5(?);");
-        $sql->bindValue(1,$nome);
-        $sql->bindValue(2,$email);
-        $sql->bindValue(3,$status);
-        $sql->bindValue(4,$senha);
-        if($sql->execute()){
-            return true;
-        }else{
-            return false;
-        }
+            //Global de Conexão
+            global $pdo;
+            
+            $sql = $pdo->prepare("INSERT INTO `usuario`(`nome`, `email`, `status`, `senha`) VALUES (?,?,?,?);");
+            $sql->bindValue(1,$nome);
+            $sql->bindValue(2,$email);
+            $sql->bindValue(3,$status);
+            $sql->bindValue(4,md5($senha));
+            if($sql->execute()){
+                return true;
+            }else{
+                return false;
+            }
     }
 
     public function editUsuario($id, $nome, $senha, $status, $email){

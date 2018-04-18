@@ -52,6 +52,57 @@ $(document).ready(function () {
         return false;	//Evita que a página seja atualizada
     });
 
+    /* ACTION EDIT CAMERA */
+    $('#formEditCamera').submit(function () { 	//Ao submeter formulário
+        var url = "actions/editCamera.php"; //Caminho do arquivo php
+        var formDados = new FormData($(this)[0]); //Pega os valores dos campos
+        $.ajax({    //Função AJAX
+            type: "POST", //Tipo da passagem dos dados
+            url: url, // local do arquivo php
+            dataType: 'html', //tipo de dados a serem passados
+            data: formDados, // dados do formulario
+            cache: false, //cache
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                var alertBox = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>AGUARDE</strong> estamos analizando seus dados!</div>';
+                $('#resultEditCam').html(alertBox);
+            },
+            complete: function () { },
+            success: function (data) {
+                $('#resultEditCam').html(data);
+                $("#camListView").load(location.href + " #camListView>*", "");
+            }
+        });
+        return false;	//Evita que a página seja atualizada
+    });
+
+    /* ADD USUARIO */
+    $('#formAddUsuario').submit(function () { 	//Ao submeter formulário
+        var url = "actions/addUsuario.php"; //Caminho do arquivo php
+        var formDados = new FormData($(this)[0]); //Pega os valores dos campos
+        $.ajax({    //Função AJAX
+            type: "POST", //Tipo da passagem dos dados
+            url: url, // local do arquivo php
+            dataType: 'html', //tipo de dados a serem passados
+            data: formDados, // dados do formulario
+            cache: false, //cache
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                var alertBox = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>AGUARDE</strong> estamos analizando seus dados!</div>';
+                $('#resultAddUser').html(alertBox);
+            },
+            complete: function () { },
+            success: function (data) {
+                $('#resultAddUser').html(data);
+                $("#userListView").load(location.href + " #userListView>*", "");
+            }
+        });
+        return false;	//Evita que a página seja atualizada
+    });
+
+
 
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar, #content').toggleClass('active');
@@ -101,6 +152,21 @@ $(document).ready(function () {
             }
         });
     });
+
+    //MODAL EDIT CAMERA
+    $('#editCamera').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var nome = button.data('nome');
+        var status = button.data('status');
+        var modal = $(this);
+        modal.find('.modal-title').text("Editar: " + nome);
+        $('#editCamId').val(id);
+        $('#editCamNome').val(nome);
+        $('#editCamStatus').val(status);
+    });
+
+    
 
     /***********************
         USUARIO 

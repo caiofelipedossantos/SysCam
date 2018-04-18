@@ -77,16 +77,34 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                                             <h4 class="card-title"><?php echo $c['nome']; ?></h4>
                                                         </div>
                                                         <div class="card-footer">
-                                                            <span>
-                                                                <?php 
-                                                                    if($c['status'] == 1){
-                                                                        echo '<span class="badge badge-success">Ativa</span>';
-                                                                    }else{
-                                                                        echo '<span class="badge badge-danger">Desativada</span>';
-                                                                    }
-                                                                ?>
-                                                            </span>
-                                                            <button class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#cameraLive" data-alias="<?php echo $c['alias'] ?>" data-nome="<?php echo $c['nome'] ?>">Ver</button>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <?php 
+                                                                        if($c['status'] == 1){
+                                                                            echo '<span class="badge badge-success">Ativa</span>';
+                                                                        }else{
+                                                                            echo '<span class="badge badge-danger">Desativada</span>';
+                                                                        }
+                                                                    ?>
+                                                                </div>
+                                                                <div class="col-md-6 text-right">
+                                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                                        <button class="btn btn-info btn-sm" 
+                                                                            data-toggle="modal" 
+                                                                            data-target="#cameraLive" 
+                                                                            data-alias="<?php echo $c['alias'] ?>" 
+                                                                            data-nome="<?php echo $c['nome'] ?>"
+                                                                        >Ver</button>
+                                                                        <button class="btn btn-danger btn-sm" 
+                                                                            data-toggle="modal" 
+                                                                            data-target="#editCamera"
+                                                                            data-id="<?php echo $c['idcamera'] ?>"
+                                                                            data-nome="<?php echo $c['nome'] ?>" 
+                                                                            data-status="<?php echo $c['status'] ?>"
+                                                                        >Editar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>                                                       
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,7 +137,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <div class="actionButton">
-                                            <button type="button" id="addCameraButton" class="btn btn-success" data-toggle="modal" data-target="#AddCamera" ><span><i class="fa fa-plus"></i></span> Usuário</button>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addUsuario" ><span><i class="fa fa-plus"></i></span> Usuário</button>
                                         </div>
                                     </div>
                                 </div>
@@ -345,8 +363,47 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                 </div>
             </div>
         </div>
+                                        
+        <!-- EDIT CAMERA -->
+        <div class="modal fade" id="editCamera" tabindex="-1" role="dialog" aria-labelledby="editCamera" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <div id="resultEditCam"></div>
+                        <form id="formEditCamera" method="POST">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <input type="hidden" name="editCamId" id="editCamId">
+                                    <label for="editCamNome">Nome</label>
+                                    <input type="text" class="form-control" name="editCamNome" id="editCamNome" placeholder="Nome" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="editCamStatus">Status</label>
+                                    <select class="custom-select mr-sm-2" name="editCamStatus" id="editCamStatus">
+                                        <option value="0">Desativado</option>
+                                        <option selected value="1">Ativado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- USUARIO -->
+        <!-- EDIT -->
         <div class="modal fade" id="editUsuario" tabindex="-1" role="dialog" aria-labelledby="editUsuario" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -383,6 +440,53 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 <div class="form-group col-md-12">
                                     <label for="emailUsuario">E-mail</label>
                                     <input type="email" class="form-control" name="emailUsuario" id="emailUsuario" placeholder="E-mail" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADD -->
+        <div class="modal fade" id="addUsuario" tabindex="-1" role="dialog" aria-labelledby="addUsuario" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Adicionar Usuário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <div id="resultAddUser"></div>
+                        <form id="formAddUsuario" method="POST">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="addNomeUsuario">Nome</label>
+                                    <input type="text" class="form-control" name="addNomeUsuario" id="addNomeUsuario" placeholder="Nome" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="addSenhaUsuario">Senha</label>
+                                    <input type="password" class="form-control" name="addSenhaUsuario" id="addSenhaUsuario" placeholder="Senha" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="addStatusUsuario">Status</label>
+                                    <select class="custom-select mr-sm-2" name="addStatusUsuario" id="addStatusUsuario">
+                                        <option value="0">Desativado</option>
+                                        <option selected value="1">Ativado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="addEmailUsuario">E-mail</label>
+                                    <input type="email" class="form-control" name="addEmailUsuario" id="addEmailUsuario" placeholder="E-mail" required>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>

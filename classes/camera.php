@@ -28,4 +28,17 @@ class Camera{
             return false;
         }
     }
+
+    public function editCamera($id, $nome, $status){
+        global $pdo;
+        $sql = $pdo->prepare("UPDATE `camera` SET `nome`=?,`status`=? WHERE `idcamera` = ?;");
+        $sql->bindValue(1,$nome);
+        $sql->bindValue(2,$status);
+        $sql->bindValue(3,$id);
+        if($sql->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
