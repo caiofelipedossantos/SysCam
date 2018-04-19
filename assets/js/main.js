@@ -166,6 +166,28 @@ $(document).ready(function () {
         $('#editCamStatus').val(status);
     });
 
+    $('#delCamera').click(function(){
+        var url = "actions/delCamera.php"; //Caminho do arquivo php
+        var formDados = $('#editCamId').val; //Pega os valores dos campos
+        $.ajax({    //Função AJAX
+            type: "POST", //Tipo da passagem dos dados
+            url: url, // local do arquivo php
+            data: {'editCamId':formDados}, // dados do formulario
+            cache: false, //cache
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                var alertBox = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>AGUARDE</strong> estamos analizando seus dados!</div>';
+                $('#resultEditCam').html(alertBox);
+            },
+            complete: function () { },
+            success: function (data) {
+                $('#resultEditCam').html(data);
+                $("#camListView").load(location.href + " #camListView>*", "");
+            }
+        });
+        return false;
+    });
     
 
     /***********************
