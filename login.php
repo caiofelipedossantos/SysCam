@@ -15,8 +15,8 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
     <form id="formlogin" class="form-login text-center" method="POST">
         <img class="mb-4" src="assets/images/logo.png" alt="" width="100%" height="80">
         <div id="result" class="mb-4"></div>
-        <label for="inputEmail" class="sr-only">E-mail</label>
-        <input type="email" id="inputEmail" name="login" class="form-control" placeholder="E-mail" required autofocus>
+        <label for="inputUser" class="sr-only">Nome</label>
+        <input type="text" id="inputUser" name="login" class="form-control" placeholder="Nome" required autofocus>
         <label for="inputPassword" class="sr-only">Senha</label>
         <input type="password" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>

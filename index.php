@@ -7,6 +7,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
  require_once 'config.php';
  require_once 'classes/camera.php';
  require_once 'classes/usuario.php';
+ require_once 'classes/acesso.php';
  ?>
     <div id="tabs" class="wrapper">
             <!-- Sidebar Holder -->
@@ -183,7 +184,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                         }else{
                                     ?>
                                             <div class="col-md-12 mt-4">
-                                                <div class="alert alert-dark" role="alert">Não há câmeras cadastradas.</div>
+                                                <div class="alert alert-dark" role="alert">Não há usuários cadastrados.</div>
                                             </div>
                                     <?php
                                         }
@@ -193,11 +194,8 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                         </div>
                     </div>
                 </section>
+
                 <section id="accessListView" class="row-section">
-                    <?php
-                        $usuario = new Usuario();
-                        $user = $usuario->listUsuario();
-                    ?>
                     <div class="container">
                         <div class="row">
                             <div class="col-10 offset-md-1 row-block">
@@ -217,66 +215,67 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                         <div class="row">
                             <div class="col-md-10 offset-md-1 row-block">
                                 <div id="accordion">
-                                    <div class="border-0 mt-3">
-                                        <div class="card-header" id="headerCam_1">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h3><i class="fa fa-user" ></i> Caio Felipe <span class="badge badge-secondary">3</span></h3>
-                                                </div>
-                                                <div class="col-md-6 text-right">
-                                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#accessCam_1" aria-expanded="true" aria-controls="collapseOne">
-                                                    Ver
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="accessCam_1" class="collapse" aria-labelledby="headerCam_1" data-parent="#accordion">
-                                        <div class="card-body">
-                                                <div class="col-md-3 mt-4">
-                                                        <div class="card">
-                                                            <img class="card-img-top" src="http://g1.ipcamlive.com/player/snapshot.php?alias=5abd19476ade9">
-                                                            <div class="card-block">
-                                                                <h4 class="card-title">Câmera 1</h4>
-                                                            </div>
-                                                            <div class="card-footer">
-                                                                    <span class="badge badge-success">Ativa</span>
-                                                                    <button class="btn btn-danger float-right btn-sm">Remover</button>
-                                                            </div>
+                                <?php
+                                    $acesso = new Acesso();
+                                    $ace = $acesso->listAcessos();
+                                    if($ace != null){
+                                        foreach ($ace as $aces) {
+                                ?>
+                                    
+                                            <div class="border-0 mt-3">
+                                                <div class="card-header" id="headerCam_<?php echo $aces['nome'];?>">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <h3><i class="fa fa-user" ></i>&nbsp;&nbsp;<?php echo $aces['nome'];?>&nbsp;&nbsp;<span class="badge badge-secondary"></span></h3>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">
+                                                            <button class="btn btn-primary" data-toggle="collapse" data-target="#accessCam_<?php echo $aces['nome'];?>" aria-expanded="true" aria-controls="collapseOne">
+                                                            Ver
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                        </div>
-                                    </div>
-                                    <div class="border-0 mt-3">
-                                        <div class="card-header" id="headerCam_2">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h3><i class="fa fa-user" ></i> Caio Felipe <span class="badge badge-secondary">3</span></h3>
-                                                </div>
-                                                <div class="col-md-6 text-right">
-                                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#accessCam_2" aria-expanded="true" aria-controls="collapseOne">
-                                                    Ver
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="accessCam_2" class="collapse" aria-labelledby="headerCam_2" data-parent="#accordion">
-                                        <div class="card-body">
-                                                <div class="col-md-3 mt-4">
-                                                        <div class="card">
-                                                            <img class="card-img-top" src="http://g1.ipcamlive.com/player/snapshot.php?alias=5abd19476ade9">
-                                                            <div class="card-block">
-                                                                <h4 class="card-title">Câmera 2</h4>
-                                                            </div>
-                                                            <div class="card-footer">
-                                                                    <span class="badge badge-success">Ativa</span>
-                                                                    <button class="btn btn-danger float-right btn-sm">Remover</button>
-                                                            </div>
-                                                        </div>
+                                                <div id="accessCam_<?php echo $aces['nome'];?>" class="collapse" aria-labelledby="headerCam_<?php echo $aces['nome'];?>" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                    <?php
+                                                            $cam_acess = explode(',',$aces['cameras']);
+                                                            foreach($cam_acess as $cams){
+                                                                $temp = explode('#',$cams);
+                                                    ?>
+                                                                <div class="col-md-4 mt-4">
+                                                                    <div class="card">
+                                                                        <img class="card-img-top" src="<?php echo $temp[2];?>">
+                                                                        <div class="card-block">
+                                                                            <h4 class="card-title"><?php echo $temp[1];?></h4>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <?php
+                                                                                if($temp[3]== 1){
+                                                                                    echo '<span class="badge badge-success">Liberada</span>';
+                                                                                }else{
+                                                                                    echo '<span class="badge badge-success">Bloqueada</span>';
+                                                                                }
+                                                                            ?>
+                                                                                
+                                                                                <button class="btn btn-danger float-right btn-sm">Remover</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    <?php
+                                                            }
+                                                    ?>
                                                     </div>
                                                 </div>
-                                        </div>
-                                    </div>
+                                            </div>
+                                    <?php
+                                        }
+                                    }else{
+                                        echo '
+                                        <div class="alert alert-dark" role="alert">
+                                            Não há acessos cadastrados!
+                                        </div>';
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -503,39 +502,62 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Editar Usuário</h5>
+                        <h5 class="modal-title">Adicionar Acesso</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                    <div id="resultEditUser"></div>
+                    <div id="resultAddAcesso"></div>
                         <form id="formAddAcesso" method="POST">
-                            <input type="hidden" class="form-control" name="idUsuario" >
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label for="nomeUsuario">Nome</label>
-                                    <input type="text" class="form-control" name="nomeUsuario"  placeholder="Nome" required>
+                                    <label for="acessoNome">Usuários Disponiveis</label>
+                                    <?php
+                                        if($user != null){
+                                    ?>
+                                            <select id="selectAcesso" class="custom-select mr-sm-2" name="acessoNome">
+                                                    <option select>Selecione</option>
+                                    <?php
+                                            foreach($user as $us){
+                                    ?>
+                                                
+                                                    <option value="<?php echo $us['idusuario'];?>"><?php echo $us['nome'];?></option>
+                                    <?php
+                                            }
+                                    ?>
+                                            </select>
+                                    <?php
+                                        }
+                                    ?>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="senhaUsuario">Senha</label>
-                                    <input type="password" class="form-control" name="senhaUsuario" placeholder="Senha">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="statusUsuario">Status</label>
-                                    <select class="custom-select mr-sm-2" name="statusUsuario" >
-                                        <option value="0">Desativado</option>
-                                        <option selected value="1">Ativado</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
+                            <?php
+                                if($cam != null){
+                            ?>
                                 <div class="form-group col-md-12">
-                                    <label for="emailUsuario">E-mail</label>
-                                    <input type="email" class="form-control" name="emailUsuario"  placeholder="E-mail" required>
+                                    <label for="statusUsuario">Câmeras</label>
+                                    <br />
+                                    <?php
+                                    foreach($cam as $ca){
+                                    ?>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox_<?php echo $ca['idcamera'];?>" value="<?php echo $ca['idcamera'];?>">
+                                            <label class="form-check-label" for="inlineCheckbox1"><?php echo $ca['nome'];?></label>
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
                                 </div>
+                            <?php
+                                }else{
+                                    echo '
+                                    <div class="alert alert-dark" role="alert">
+                                        Não há câmeras cadastradas!
+                                    </div>';
+                                }
+                            ?>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </form>

@@ -5,7 +5,7 @@ class Usuario{
         global $pdo;
         $dados = array();
 
-        $sql = $pdo->prepare("SELECT `idusuario`, `nome`,`status`, `tipo` FROM `usuario` WHERE email = ? AND senha = md5(?);");
+        $sql = $pdo->prepare("SELECT `idusuario`, `nome`,`status`, `tipo` FROM `usuario` WHERE nome = ? AND senha = md5(?);");
         $sql->bindValue(1,$login);
         $sql->bindValue(2,$senha);
         $sql->execute();
