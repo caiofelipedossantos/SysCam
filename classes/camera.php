@@ -41,4 +41,15 @@ class Camera{
             return false;
         }
     }
+
+    public function deleteCamera($id){
+        global $pdo;
+        $sql = $pdo->prepare("DELETE FROM `camera` WHERE `idcamera` = ?;");
+        $sql->bindValue(1,$id);
+        if($sql->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

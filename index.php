@@ -393,6 +393,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button id="delCamera" type="button" class="btn btn-danger float-right">Apagar</button>
                         </form>
                     </div>
                     <div class="modal-footer">
