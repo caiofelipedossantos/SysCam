@@ -34,7 +34,7 @@ class Acesso{
         $sql->bindValue(1,$id);
         $sql->execute();
         if($sql->rowCount() > 0){
-            $dados = $sql->fetAll();
+            $dados = $sql->fetchAll();
         }
         return $dados;
     }
