@@ -102,6 +102,67 @@ $(document).ready(function () {
         return false;	//Evita que a página seja atualizada
     });
 
+    /***********
+     * ADD ACESSO
+     */
+    $('#formAddAcesso').submit(function () { 	//Ao submeter formulário
+        var url = "actions/addAcesso.php"; //Caminho do arquivo php
+        var formDados = new FormData($(this)[0]); //Pega os valores dos campos
+        $.ajax({    //Função AJAX
+            type: "POST", //Tipo da passagem dos dados
+            url: url, // local do arquivo php
+            dataType: 'html', //tipo de dados a serem passados
+            data: formDados, // dados do formulario
+            cache: false, //cache
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                var alertBox = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>AGUARDE</strong> estamos analizando seus dados!</div>';
+                $('#resultAddAcesso').html(alertBox);
+            },
+            complete: function () { },
+            success: function (data) {
+                $('#resultAddAcesso').html(data);
+                $("#accessListView").load(location.href + " #accessListView>*", "");
+            }
+        });
+        return false;	//Evita que a página seja atualizada
+    });
+
+    $('#removeAcesso').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var idUser = button.data('idacessoremoveuser');
+        var idCam = button.data('idacessoremovecam');
+        var modal = $(this);
+        modal.find('.modal-title').text('Remover Câmera ' + idCam);
+        $('#idUserRemoveAcess').val(idUser);
+        $('#idCamRemoveAcess').val(idCam);
+    });
+
+    $('#formRemoveAcess').submit(function () { 	//Ao submeter formulário
+        var url = "actions/removeAcesso.php"; //Caminho do arquivo php
+        var formDados = new FormData($(this)[0]); //Pega os valores dos campos
+        $.ajax({    //Função AJAX
+            type: "POST", //Tipo da passagem dos dados
+            url: url, // local do arquivo php
+            dataType: 'html', //tipo de dados a serem passados
+            data: formDados, // dados do formulario
+            cache: false, //cache
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                var alertBox = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>AGUARDE</strong> estamos analizando seus dados!</div>';
+                $('#resultRemoveAcess').html(alertBox);
+            },
+            complete: function () { },
+            success: function (data) {
+                $('#resultRemoveAcess').html(data);
+                $("#accessListView").load(location.href + " #accessListView>*", "");
+            }
+        });
+        return false;	//Evita que a página seja atualizada
+    });
+
 
 
     $('#sidebarCollapse').on('click', function () {
@@ -242,5 +303,6 @@ $(document).ready(function () {
     $("#tabs").tabs();
 
     /* TOOLTIP */
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
+   
 });

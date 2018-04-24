@@ -250,14 +250,17 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                                                         </div>
                                                                         <div class="card-footer">
                                                                             <?php
-                                                                                if($temp[3]== 1){
+                                                                                if($temp[3]== 1 && $temp[4] <= date("Y-m-d H:i") && $temp[5] >= date("Y-m-d H:i") ){
                                                                                     echo '<span class="badge badge-success">Liberada</span>';
                                                                                 }else{
-                                                                                    echo '<span class="badge badge-success">Bloqueada</span>';
+                                                                                    echo '<span class="badge badge-danger">Bloqueada</span>';
                                                                                 }
                                                                             ?>
                                                                                 
-                                                                                <button class="btn btn-danger float-right btn-sm">Remover</button>
+                                                                                <button type="button" class="btn btn-danger btn-sm float-right" data-toggle="modal" 
+                                                                                data-target="#removeAcesso" 
+                                                                                data-idacessoremoveuser="<?php echo $aces['idusuario'];?>"
+                                                                                data-idacessoremovecam="<?php echo $temp[0];?>">Remover</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -517,8 +520,8 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                     <?php
                                         if($user != null){
                                     ?>
-                                            <select id="selectAcesso" class="custom-select mr-sm-2" name="acessoNome">
-                                                    <option select>Selecione</option>
+                                            <select id="selectAcesso" class="custom-select mr-sm-2" name="acessoNome" required>
+                                                    <option value="">Selecione</option>
                                     <?php
                                             foreach($user as $us){
                                     ?>
@@ -540,16 +543,34 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 <div class="form-group col-md-12">
                                     <label for="statusUsuario">Câmeras</label>
                                     <br />
+
+                                    <select id="selectCamAcesso" class="custom-select mr-sm-2" name="acessoCamera" required>
+                                                    <option value="">Selecione</option>
                                     <?php
                                     foreach($cam as $ca){
                                     ?>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox_<?php echo $ca['idcamera'];?>" value="<?php echo $ca['idcamera'];?>">
-                                            <label class="form-check-label" for="inlineCheckbox1"><?php echo $ca['nome'];?></label>
-                                        </div>
+                                        <option value="<?php echo $ca['idcamera'];?>"><?php echo $ca['nome'];?></option>
                                     <?php
                                     }
                                     ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dataInicio">Data e Hora Inicio Inicio</label>
+                                    <div class="col-10">
+                                        <?php
+                                            date_default_timezone_set('America/Sao_Paulo');
+                                            $date = date("Y-m-d");
+                                            $time = date("H:i");
+                                        ?>
+                                        <input class="form-control" type="datetime-local" name="dataInicio" value="<?php echo $date."T".$time;?>" id="dataInicio">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dataInicio">Data e Hora Inicio Fim</label>
+                                    <div class="col-10">
+                                        <input class="form-control" type="datetime-local" name="dataFim" id="dataFim">
+                                    </div>
                                 </div>
                             <?php
                                 }else{
@@ -565,6 +586,32 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                     </div>
                     <div class="modal-footer">
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REMOVE ACESSO -->
+        <div class="modal fade" id="removeAcesso" tabindex="-1" role="dialog" aria-labelledby="removeAcessoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeAcessoLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="resultRemoveAcess"></div>
+                    <form id="formRemoveAcess">
+                        <input type="hidden" name="idUserRemoveAcess" id="idUserRemoveAcess" />
+                        <input type="hidden" name="idCamRemoveAcess" id="idCamRemoveAcess" />
+                        <h4>Deseja remover está câmera?</h4>
+                        <button type="submit" class="btn btn-danger float-right">Sim</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
                 </div>
             </div>
         </div>

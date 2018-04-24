@@ -34,12 +34,35 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                         <img class="card-img-top" src="<?php echo $ace['screenshot']; ?>">
                                         <div class="card-block">
                                             <h4 class="card-title"><?php echo $ace['nome']; ?></h4>
+                                            <input type="hidden" id="start" value="<?php echo $ace['data_inicio'];?>" />
+                                            <input type="hidden" id="end" value="<?php echo $ace['data_fim'];?>" />
+                                            <input type="hidden" id="today" value="<?php echo date("Y-m-d H:i:s");?>" />
+                                            <div class="progress" style="height: 15px;">
+                                                
+                                                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <script>
+                                                var temp;
+                                                var ini = document.getElementById('start').value;
+                                                var fim = document.getElementById('end').value;
+                                                var ago = document.getElementById('today').value;
+                                                ini = ini.split("-");
+                                                temp = ini[2].split(':');
+
+                                                var start = new Date(ini[0], ini[1] - 1, ini[2],17,23,00), // Jan 1, 2015
+                                                end = new Date(2018, 3, 24,17,25,00), // June 24, 2015
+                                                today = new Date(), // April 23, 2015
+                                                p = Math.round(((today - start) / (end - start)) * 100) + '%';
+                                                console.log(temp);
+                                            // Update the progress bar
+                                             //$('.bar').css("width", p).after().append(p);
+                                            </script>
                                         </div>
                                         <div class="card-footer">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                 <?php
-                                                    if($ace['status'] == 1){
+                                                    if($ace['status'] == 1 && date("Y-m-d H:i") >= $ace['data_inicio'] && date("Y-m-d H:i") <= $ace['data_fim']){
                                                         echo '<span class="badge badge-success">Liberada</span>';
                                                     }else{
                                                         echo '<span class="badge badge-danger">Não Liberada</span>';
@@ -57,6 +80,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                                             >Ver</button>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
