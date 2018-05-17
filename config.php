@@ -9,10 +9,10 @@ if(ENVIRONMENT == 'development') {
 	$config['dbuser'] = 'root';
 	$config['dbpass'] = '';
 } else {
-	define("BASE_URL", "");
-	$config['dbname'] = '';
-	$config['host'] = '';
-	$config['dbuser'] = '';
+	define("BASE_URL", "https://nobrevelorios.com.br/");
+	$config['dbname'] = 'nobrevel_database';
+	$config['host'] = 'localhost';
+	$config['dbuser'] = 'nobrevel_root';
 	$config['dbpass'] = '';
 }
 

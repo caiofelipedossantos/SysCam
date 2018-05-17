@@ -292,6 +292,16 @@ a.article, a.article:hover {
 }
 
 
+.rowUsers {
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    padding: 30px;
+}
+
+.imgUser i {
+    font-size: 60px;
+}
+
+
 
 /* ---------------------------------------------------
     MEDIAQUERIES

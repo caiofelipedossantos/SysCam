@@ -65,4 +65,15 @@ class Acesso{
             return false;
         }
     }
+    
+    public function removeAcessoAll($acessoNome){
+        global $pdo;
+        $sql = $pdo->prepare("DELETE FROM `usuario_camera` WHERE `usuario_idusuario` = ?;");
+        $sql->bindValue(1,$acessoNome);
+        if($sql->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

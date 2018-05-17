@@ -3,24 +3,20 @@ session_start();
 
 //Rquisitando arquivo de configuração
 require_once '../config.php';
-require_once '../classes/usuario.php';
+require_once '../classes/acesso.php';
 
 //Pegando dados passados por AJAX
-$id = addslashes($_POST['idUsuario']);	
-$nome = addslashes($_POST['nomeUsuario']);
-$senha = addslashes($_POST['senhaUsuario']);
-$status = addslashes($_POST['statusUsuario']);
+$acessoUser = addslashes($_POST['idUserRemoveAcessAll']);	
 
-//Instancia da classe usuario
+//Instancia da classe Acesso
 
-$usuario = new Usuario();
+$acesso = new Acesso();
+$ace = $acesso->removeAcessoAll($acessoUser);
 
-$user = $usuario->editUsuario($id, $nome, $senha, $status);
-
-if($user == true){
+if($ace == true){
     echo '
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Usuário alterado com sucesso!</strong> 
+        <strong>Acesso removido com sucesso!</strong> 
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -28,7 +24,7 @@ if($user == true){
 }else{
     echo '
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Não foi possivel alterar o usuário!</strong> 
+        <strong>Não foi possivel remover seu acesso!</strong> 
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

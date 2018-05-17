@@ -13,7 +13,7 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <img class="mb-4" src="assets/images/logo.png" alt="" width="100%" height="80">
+                            <img class="mb-4" src="assets/images/logo.png" height="80">
                         </div>
                         <a href="sair.php" class="btn btn-secondary">Sair</a>
                     </div>
@@ -34,45 +34,48 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                         <img class="card-img-top" src="<?php echo $ace['screenshot']; ?>">
                                         <div class="card-block">
                                             <h4 class="card-title"><?php echo $ace['nome']; ?></h4>
-                                            <input type="hidden" id="start" value="<?php echo $ace['data_inicio'];?>" />
-                                            <input type="hidden" id="end" value="<?php echo $ace['data_fim'];?>" />
-                                            <input type="hidden" id="today" value="<?php echo date("Y-m-d H:i:s");?>" />
-                                            <div class="progress" style="height: 15px;">
+                                            <div id="cardProgress" class="progress" style="height: 15px;">
+                                                <?php
+                                                $date1 = strtotime($ace['data_inicio']);
+                                                $date2 = strtotime($ace['data_fim']);
+                                                $today = time();
                                                 
-                                                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                $dateDiff = $date2 - $date1;
+                                                $dateDiffForToday = $today - $date1;
+                                                
+                                                $percentage = $dateDiffForToday / $dateDiff * 100;
+                                                $percentageRounded = round($percentage);
+                                                
+                                                ?>
+                                                <?php
+                                                    if($percentageRounded > 100){
+                                                        ?>
+                                                        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Acabou o Tempo!</div>
+                                                    <?php
+                                                    }else{
+                                                        ?>
+                                                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: <?php echo $percentageRounded . '%';?>;" aria-valuenow="<?php echo $percentageRounded;?>" aria-valuemin="0" aria-valuemax="100"><?php echo $percentageRounded . '%';?></div>
+                                                        <?php
+                                                    }
+                                                ?>
+                                                
                                             </div>
-                                            <script>
-                                                var temp;
-                                                var ini = document.getElementById('start').value;
-                                                var fim = document.getElementById('end').value;
-                                                var ago = document.getElementById('today').value;
-                                                ini = ini.split("-");
-                                                temp = ini[2].split(':');
-
-                                                var start = new Date(ini[0], ini[1] - 1, ini[2],17,23,00), // Jan 1, 2015
-                                                end = new Date(2018, 3, 24,17,25,00), // June 24, 2015
-                                                today = new Date(), // April 23, 2015
-                                                p = Math.round(((today - start) / (end - start)) * 100) + '%';
-                                                console.log(temp);
-                                            // Update the progress bar
-                                             //$('.bar').css("width", p).after().append(p);
-                                            </script>
                                         </div>
                                         <div class="card-footer">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" id="statusFooter">
                                                 <?php
-                                                    if($ace['status'] == 1 && date("Y-m-d H:i") >= $ace['data_inicio'] && date("Y-m-d H:i") <= $ace['data_fim']){
-                                                        echo '<span class="badge badge-success">Liberada</span>';
+                                                    if($ace['data_inicio'] < date("Y-m-d H:i") && date("Y-m-d H:i:s") < $ace['data_fim']){
+                                                        echo '<span id="statusUserLive" class="badge badge-success">Liberada</span>';
                                                     }else{
-                                                        echo '<span class="badge badge-danger">Não Liberada</span>';
+                                                        echo '<span id="statusUserLive" class="badge badge-danger">Bloqueada</span>';
                                                     }
                                                 ?>
                                                     
                                                 </div>
                                                 <div class="col-md-6 text-right">
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <button class="btn btn-info btn-sm" 
+                                                        <button id="buttonLiveUser" class="btn btn-info btn-sm btnLive" 
                                                             data-toggle="modal" 
                                                             data-target="#cameraLive" 
                                                             data-alias="<?php echo $ace['alias']; ?>" 

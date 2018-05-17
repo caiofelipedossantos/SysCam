@@ -20,7 +20,7 @@ class Usuario{
         global $pdo;
         $dados = array();
 
-        $sql = $pdo->prepare("SELECT `idusuario`, `nome`, `email`, `status` FROM `usuario` WHERE `tipo`= 1");
+        $sql = $pdo->prepare("SELECT `idusuario`, `nome`, `status` FROM `usuario` WHERE `tipo`= 1");
         $sql->execute();
         if($sql->rowCount() > 0):
             $dados = $sql->fetchAll();
@@ -28,15 +28,14 @@ class Usuario{
         return $dados;
     }
 
-    public function addUsuario($nome, $email, $status, $senha){
+    public function addUsuario($nome, $status, $senha){
             //Global de ConexÃ£o
             global $pdo;
             
-            $sql = $pdo->prepare("INSERT INTO `usuario`(`nome`, `email`, `status`, `senha`) VALUES (?,?,?,?);");
+            $sql = $pdo->prepare("INSERT INTO `usuario`(`nome`, `status`, `senha`) VALUES (?,?,?);");
             $sql->bindValue(1,$nome);
-            $sql->bindValue(2,$email);
-            $sql->bindValue(3,$status);
-            $sql->bindValue(4,md5($senha));
+            $sql->bindValue(2,$status);
+            $sql->bindValue(3,md5($senha));
             if($sql->execute()){
                 return true;
             }else{
@@ -44,28 +43,26 @@ class Usuario{
             }
     }
 
-    public function editUsuario($id, $nome, $senha, $status, $email){
+    public function editUsuario($id, $nome, $senha, $status){
         //Global de ConexÃ£o
         global $pdo;
         
         if($senha == null){
-            $sql = $pdo->prepare("UPDATE `usuario` SET `nome` = ?, `email` = ?, `status` = ? WHERE `usuario`.`idusuario` = ?;");
+            $sql = $pdo->prepare("UPDATE `usuario` SET `nome` = ?, `status` = ? WHERE `usuario`.`idusuario` = ?;");
             $sql->bindValue(1,$nome);
-            $sql->bindValue(2,$email);
-            $sql->bindValue(3,$status);
-            $sql->bindValue(4,$id);
+            $sql->bindValue(2,$status);
+            $sql->bindValue(3,$id);
             if($sql->execute()){
                 return true;
             }else{
                 return false;
             }
         }else{
-            $sql = $pdo->prepare("UPDATE `usuario` SET `nome` = ?, `email` = ?, `status` = ?, `senha` = md5(?) WHERE `usuario`.`idusuario` = ?;");
+            $sql = $pdo->prepare("UPDATE `usuario` SET `nome` = ?, `status` = ?, `senha` = md5(?) WHERE `usuario`.`idusuario` = ?;");
             $sql->bindValue(1,$nome);
-            $sql->bindValue(2,$email);
-            $sql->bindValue(3,$status);
-            $sql->bindValue(4,$senha);
-            $sql->bindValue(5,$id);
+            $sql->bindValue(2,$status);
+            $sql->bindValue(3,$senha);
+            $sql->bindValue(4,$id);
             if($sql->execute()){
                 return true;
             }else{
@@ -73,5 +70,18 @@ class Usuario{
             }
         }
         
+    }
+    
+    public function deleteUsuario($id){
+        //Global de Conex«ªo
+            global $pdo;
+            
+            $sql = $pdo->prepare("DELETE FROM `usuario` WHERE `idusuario` = ?;");
+            $sql->bindValue(1,$id);
+            if($sql->execute()){
+                return true;
+            }else{
+                return false;
+            }
     }
 }

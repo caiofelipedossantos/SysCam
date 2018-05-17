@@ -17,14 +17,15 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                 </div>
                 <ul class="list-unstyled components">
                     <li>
+                        <a href="#userListView"><i class="fa fa-user"></i> Usuários</a>
+                    </li>
+                    <li>
                         <a href="#accessListView" ><i class="fa fa-lock"></i> Acessos</a>
                     </li>
                     <li>
                         <a href="#camListView" ><i class="fa fa-camera"></i> Câmeras</a>
                     </li>
-                    <li>
-                        <a href="#userListView"><i class="fa fa-user"></i> Usuários</a>
-                    </li>
+                    
                 </ul>
             </nav>
 
@@ -42,7 +43,8 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                         <a href="sair.php" class="btn btn-secondary">Sair</a>
                     </div>
                 </nav>
-
+                
+                <!-- LIST CAM VIEW -->
                 <section id="camListView" class="row-section">
                     <?php
                         $camera = new Camera();
@@ -124,6 +126,8 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                         </div>
                     </div>
                 </section>
+                
+                <!-- LIST USER VIEW -->
                 <section id="userListView" class="row-section">
                     <?php
                         $usuario = new Usuario();
@@ -145,14 +149,47 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 
                             </div>
                         </div>
+                        
+                        
                         <div class="row">
                             <div class="col-md-10 offset-md-1 row-block">
-                                <div class="row">
                                     <?php
                                         if($user != null){
                                             foreach($user as $u){
                                     ?>
-                                                <div class="col-md-3 mt-4">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <h3>
+                                                                <?php
+                                                                    if($u['status'] == 1){
+                                                                        echo '<i class="fa fa-user" style="color: #218838;" ></i>&nbsp;&nbsp;';
+                                                                    }else{
+                                                                        echo '<i class="fa fa-user" style="color: #C82333;" ></i>&nbsp;&nbsp;';
+                                                                    }
+                                                                ?>
+                                                                <?php echo $u['nome'];?>&nbsp;&nbsp;</h3>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">
+                                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" 
+                                                            data-target="#removeUser" 
+                                                            data-idremoveusuario="<?php echo $u['idusuario'];?>">
+                                                                Excluir
+                                                            </button>
+                                                            
+                                                            <button class="btn btn-info btn-sm" 
+                                                            data-toggle="modal" 
+                                                            data-target="#editUsuario" 
+                                                            data-id="<?php echo $u['idusuario'] ?>" 
+                                                            data-nome="<?php echo $u['nome'] ?>"
+                                                            data-status="<?php echo $u['status'] ?>"
+                                                            >
+                                                                Editar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--<div class="col-md-3 mt-4">
                                                     <div class="card">
                                                         <img class="card-img-top" src="assets/images/user.png">
                                                         <div class="card-block">
@@ -174,11 +211,10 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                                             data-id="<?php echo $u['idusuario'] ?>" 
                                                             data-nome="<?php echo $u['nome'] ?>"
                                                             data-status="<?php echo $u['status'] ?>"
-                                                            data-email="<?php echo $u['email'] ?>"
                                                             >Editar</button>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                     <?php
                                             }
                                         }else{
@@ -189,12 +225,12 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                     <?php
                                         }
                                     ?>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
+                <!-- LIST ACCESS VIEW -->
                 <section id="accessListView" class="row-section">
                     <div class="container">
                         <div class="row">
@@ -229,13 +265,17 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                                             <h3><i class="fa fa-user" ></i>&nbsp;&nbsp;<?php echo $aces['nome'];?>&nbsp;&nbsp;<span class="badge badge-secondary"></span></h3>
                                                         </div>
                                                         <div class="col-md-6 text-right">
-                                                            <button class="btn btn-primary" data-toggle="collapse" data-target="#accessCam_<?php echo $aces['nome'];?>" aria-expanded="true" aria-controls="collapseOne">
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#removeAcessoAll" data-iduseracessall="<?php echo $aces['idusuario'];?>">
+                                                                Excluir
+                                                            </button>
+                                                            
+                                                            <button class="btn btn-primary" data-toggle="collapse" data-target="#accessCam_<?php echo $aces['idusuario'];?>" aria-expanded="true" aria-controls="collapseOne">
                                                             Ver
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="accessCam_<?php echo $aces['nome'];?>" class="collapse" aria-labelledby="headerCam_<?php echo $aces['nome'];?>" data-parent="#accordion">
+                                                <div id="accessCam_<?php echo $aces['idusuario'];?>" class="collapse" aria-labelledby="headerCam_<?php echo $aces['idusuario'];?>" data-parent="#accordion">
                                                     <div class="card-body">
                                                     <?php
                                                             $cam_acess = explode(',',$aces['cameras']);
@@ -439,12 +479,6 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label for="emailUsuario">E-mail</label>
-                                    <input type="email" class="form-control" name="emailUsuario" id="emailUsuario" placeholder="E-mail" required>
-                                </div>
-                            </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </form>
                     </div>
@@ -487,10 +521,6 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label for="addEmailUsuario">E-mail</label>
-                                    <input type="email" class="form-control" name="addEmailUsuario" id="addEmailUsuario" placeholder="E-mail" required>
-                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </form>
@@ -500,7 +530,35 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                 </div>
             </div>
         </div>
-
+        
+        <!-- REMOVE USER -->
+        <div class="modal fade" id="removeUser" tabindex="-1" role="dialog" aria-labelledby="removeUserLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Remover Usuário</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info" role="alert">
+                      <strong>Atenção!</strong> antes de excluir este usuário é preciso remover seus acessos.
+                    </div>
+                    <div id="resultRemoveUser"></div>
+                    <form id="formRemoveUser">
+                        <input type="hidden" name="idUserRemove" id="idUserRemove" />
+                        <h4>Deseja remover este Usúario?</h4>
+                        <button type="submit" class="btn btn-danger float-right">Sim</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        
          <!-- Acesso -->
          <div class="modal fade" id="addAcessoModal" tabindex="-1" role="dialog" aria-labelledby="addAcesso" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -614,6 +672,31 @@ if(isset($_SESSION['dados']) && !empty($_SESSION['dados'])){
                 </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- REMOVE ACESSO ALL -->
+        <div class="modal fade" id="removeAcessoAll" tabindex="-1" role="dialog" aria-labelledby="removeAcessoAllLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="removeAcessoAllLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div id="resultRemoveAcessAll"></div>
+                    <form id="formRemoveAcessAll">
+                        <input type="hidden" name="idUserRemoveAcessAll" id="idUserRemoveAcessAll" />
+                        <h4>Deseja remover este acesso?</h4>
+                        <button type="submit" class="btn btn-danger float-right">Sim</button>
+                    </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              </div>
+            </div>
+          </div>
         </div>
  <?php
  /** Chamada do template de Rodapé */
